@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<button id="approveBtn">Approve Request</button>
+
+<p id="adminOutput"></p>
+
+<script>
+document.getElementById("approveBtn").addEventListener("click", async function(){
+    let response = await fetch("http://192.168.1.10:5000/approve", {
+        method: "POST"
+    });
+
+    let result = await response.json();
+    document.getElementById("adminOutput").innerText =
+        "OTP Generated (for demo): " + result.otp;
+});
+</script>
+
+</body>
+</html>

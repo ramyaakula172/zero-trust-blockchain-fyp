@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request Data</title>
+</head>
+<body>
+
+<h2>Request Data</h2>
+
+<form id="requestForm">
+    <label>Data ID:</label><br>
+    <input type="text" id="dataId" required><br><br>
+
+    <button type="submit">Request Access</button>
+</form>
+
+<p id="requestOutput"></p>
+
+<hr>
+
+<!-- ✅ REAL-TIME STATUS DISPLAY -->
+<p><b>Status:</b> <span id="status">Waiting</span></p>
+
+<script>
+// request access
+document.getElementById("requestForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    let dataId = document.getElementById("dataId").value;
+
+    let response = await fetch("http://192.168.1.10:5000/request-data", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({dataId})
+    });
+
+    let result = await response.json();
+    document.getElementById("requestOutput").innerText = result.message;
+});
+
+// ✅ REAL-TIME POLLING
+setInterval(async () => {
+    let res = await fetch("http://192.168.1.10:5000/status");
+    let data = await res.json();
+    document.getElementById("status").innerText = data.status;
+}, 2000);
+</script>
+
+</body>
+</html>
